@@ -1,16 +1,23 @@
-import {EventEmitter, Injectable, Output} from '@angular/core';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {LoginRequestPayload} from './signin/login-request.payload';
+import {Injectable} from '@angular/core';
+import {Observable, of, Subject} from 'rxjs';
 import {SignupRequestPayload} from './signup/singup-request.payload';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {catchError, tap} from 'rxjs/operators';
+import {LoginRequestPayload} from './signin/login-request.payload';
+import {Router} from '@angular/router';
+
+const httpOptions = {
+  headers: new HttpHeaders({'Content-Type': 'application/json'})
+};
 
 @Injectable()
 export class AuthService {
 
-  @Output() loggedIn: EventEmitter<boolean> = new EventEmitter();
+  // @Output() loggedIn: EventEmitter<boolean> = new EventEmitter();
+  private url = 'http://172.20.10.3:8080/login';
+  public loginStatus = new Subject<boolean>();
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private router: Router) {
   }
 
   signup(signupRequestPayload: SignupRequestPayload): Observable<any> {
@@ -21,21 +28,51 @@ export class AuthService {
     );
   }
 
-  login(loginRequestPayload: LoginRequestPayload): Observable<boolean> {
-    return this.httpClient
-      .post(
-        'http://172.20.10.3:8080/login',
-        loginRequestPayload, {
-          observe: 'response',
-          responseType: 'text'
-        })
-      .pipe(
-        map((data) => {
-          localStorage.setItem('authenticationToken', data.headers.get('Authorization'));
-          this.loggedIn.emit(true);
-          return true;
-        })
-      );
+  // login(loginRequestPayload: LoginRequestPayload): Observable<boolean> {
+  //   return this.httpClient
+  //     .post(
+  //       'http://172.20.10.3:8080/login',
+  //       loginRequestPayload, {
+  //         observe: 'response',
+  //         responseType: 'text'
+  //       })
+  //     .pipe(
+  //       map((data) => {
+  //         localStorage.setItem('authenticationToken', data.headers.get('Authorization'));
+  //         // this.loggedIn.emit(true);
+  //         this.loginStatus.next(true);
+  //         return true;
+  //       })
+  //     );
+  // }
+
+  login(loginRequestPayload: LoginRequestPayload): Observable<any> {
+    return this.httpClient.post<any>(this.url, loginRequestPayload, httpOptions).pipe(
+      tap((result) => this.save_token(result)),
+      catchError(this.handleError<any>('login'))
+    );
+  }
+
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      return of(result as T);
+    };
+  }
+
+  private save_token(data) {
+    if (data.success) {
+      localStorage.setItem('token', data.token);
+      return;
+    }
+  }
+
+  canActivate(): boolean {
+    const token = localStorage.getItem('token');
+    if (token == null) {
+      this.router.navigate(['login']);
+      return false;
+    }
+    return true;
   }
 
   getJwtToken() {

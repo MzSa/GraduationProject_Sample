@@ -1,4 +1,4 @@
-<div class="container-scroller">
+<div class="container-scroller" *ngIf="isLoading else loading">
   <app-navbar *ngIf="showNavbar"></app-navbar>
   <div class="container-fluid page-body-wrapper">
     <app-sidebar *ngIf="showSidebar"></app-sidebar>
@@ -16,3 +16,7 @@
   </div>
   <!-- page-body-wrapper ends -->
 </div>
+
+<ng-template #loading>
+  <router-outlet></router-outlet>
+</ng-template>

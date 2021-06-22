@@ -45,7 +45,7 @@ export class SigninComponent implements OnInit {
         this.isError = false;
         if (localStorage.getItem('authenticationToken') !== 'null') {
           console.log(this.auth.getJwtToken());
-          this.router.navigateByUrl('/cars');
+          this.router.navigateByUrl('/dashboard');
 
         }
       },
