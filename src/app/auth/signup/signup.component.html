@@ -1,0 +1,203 @@
+<div style="height: 100%; margin: 0%; overflow-y: auto; height: 100%; overflow-x: hidden;">
+  <div class="row justify-content-center" style="height: 100%; padding-top: 10%;">
+    <div class="col-md-6" style="margin-left: 25%;">
+
+      <div class="card A">
+        <div class="card-header" style="text-align: center">
+          <h1 style="color:white; font-size: 40px; font-family: Arvo; padding: 1%;">Register</h1>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="signupForm" (ngSubmit)="signup()">
+
+            <div class="form-group row">
+              <label class="col-md-4 col-form-label text-md-right"
+                     style="font-weight: bold; color: #000000;padding-top: 1% ;padding-left: 15%;">
+                Name</label>
+              <div class="col-md-6">
+                <input type="text" [formControlName]="'name'" class="form-control" required autofocus>
+                <span *ngIf="!signupForm.get('name').valid && signupForm.get('name').touched"
+                      style="color: red;">
+                  Please provide a valid name
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-4 col-form-label text-md-right"
+                     style="font-weight: bold; color: #000000;padding-top: 1% ;padding-left: 15%;">User
+                Name</label>
+              <div class="col-md-6">
+                <input type="text" [formControlName]="'username'" class="form-control" required autofocus>
+                <span *ngIf="!signupForm.get('username').valid && signupForm.get('username').touched"
+                      style="color: red;">
+                  Please provide a valid username
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="password" class="col-md-4 col-form-label text-md-right"
+                     style="font-weight: bold; color: #000000;padding-top: 1%;padding-left: 15%;">Password</label>
+              <div class="col-md-6">
+                <input type="password" [formControlName]="'password'" id="password" class="form-control" name="password"
+                       required>
+                <span *ngIf="!signupForm.get('password').valid && signupForm.get('password').touched"
+                      style="color: red;">
+                  Please provide a valid Password
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="email_address" class="col-md-4 col-form-label text-md-right"
+                     style="font-weight: bold; color: #000000;padding-top: 1%;padding-left: 15%;">E-Mail
+                Address</label>
+              <div class="col-md-6">
+                <input type="text" [formControlName]="'email'" id="email_address" class="form-control"
+                       name="email-address" required autofocus>
+                <span *ngIf="!signupForm.get('email').valid && signupForm.get('email').touched" style="color: red;">
+                  Please provide a valid email
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-4 col-form-label text-md-right"
+                     style="font-weight: bold; color: #000000;padding-top: 1%;padding-left: 15%;">mobile
+                Number</label>
+              <div class="col-md-6">
+                <input type="text" [formControlName]="'mobileNumber'" class="form-control" required autofocus>
+                <span *ngIf="!signupForm.get('mobileNumber').valid && signupForm.get('mobileNumber').touched"
+                      style="color: red;">
+                  Please provide a valid mobile Number
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-4 col-form-label text-md-right"
+                     style="font-weight: bold; color: #000000;padding-top: 1%;padding-left: 15%;">Address</label>
+              <div class="col-md-6">
+                <input type="text" [formControlName]="'address'" class="form-control" required autofocus>
+                <span *ngIf="!signupForm.get('address').valid && signupForm.get('address').touched" style="color: red;">
+                  Please provide a valid Address
+                </span>
+              </div>
+            </div>
+
+            <!--<div class="form-group row">
+              <label class="col-md-4 col-form-label text-md-right"
+                style="font-weight: bold; color: #000000;padding-top: 1%;padding-left: 15%;">Type of
+                user</label>
+              <div class="col-md-6">
+                <select (change)="selectChangeTypeHandler($event)" class="form-control" >
+                  <option disabled>Select Type of user</option>
+                  <option *ngFor="let type of types">{{type}}</option>
+                </select>
+              </div>
+            </div>-->
+
+            <!--<div class="form-group row">
+                              <mat-form-field appearance="fill">
+                                  <mat-label>Select Type Of User</mat-label>
+                                  <mat-select [(value)]="selected">
+                                      <mat-option>None</mat-option>
+                                      <mat-option value="1">Teacher</mat-option>
+                                      <mat-option value="2">Parent</mat-option>
+                                      <mat-option value="3">Student</mat-option>
+                                  </mat-select>
+                              </mat-form-field>
+                          </div>-->
+
+            <!--<div class="form-group row">
+                          <select [formControlName]="'role'">
+                              <option disabled>Select Type of user</option>
+                              <option *ngFor="let type of types">{{type}}</option>
+                          </select>
+                      </div>
+
+                      <div class="form-group row">
+                          <select [formControlName]="'sectionLevel'">
+                              <option disabled>Select section Level for user</option>
+                              <option *ngFor="let sectionLevel of sectionLevels">{{sectionLevel}}</option>
+                          </select>
+                      </div>-->
+
+            <!--<div class="form-group row">
+              <label class="col-md-4 col-form-label text-md-right" style="font-weight: bold; color: #000000;">section
+                Level</label>
+              <select (change)="selectChangesectionLevelHandler($event)" class="form-control"
+                style="width: 46%; margin-left: 2%;">
+                <option disabled>Select section Level</option>
+                <option *ngFor="let sectionLevel of sectionLevels" value="{{sectionLevel.value}}">
+                  {{sectionLevel.label}}</option>
+              </select>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-4 col-form-label text-md-right" style="font-weight: bold; color: #000000;">Name
+                Account
+                For Parent</label>
+              <div class="col-md-6">
+                <input type="text" [formControlName]="'parentName'" class="form-control" required autofocus>
+                <span *ngIf="!signupForm.get('parentName').valid && signupForm.get('parentName').touched"
+                  style="color: red;">
+                  Please provide a valid Parent Name
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="password" class="col-md-4 col-form-label text-md-right"
+                style="font-weight: bold; color: #000000;">Password For Parent
+                Account</label>
+              <div class="col-md-6">
+                <input type="password" [formControlName]="'parentPassword'" id="password" class="form-control"
+                  name="password" required>
+                <span *ngIf="!signupForm.get('parentPassword').valid && signupForm.get('parentPassword').touched"
+                  style="color: red;">
+                  Please provide a valid Password
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="email_address" class="col-md-4 col-form-label text-md-right"
+                style="font-weight: bold; color: #000000;">E-Mail
+                Address For Parent Account</label>
+              <div class="col-md-6">
+                <input type="text" [formControlName]="'parentEmail'" id="email_address" class="form-control"
+                  name="email-address" required autofocus>
+                <span *ngIf="!signupForm.get('parentEmail').valid && signupForm.get('parentEmail').touched"
+                  style="color: red;">
+                  Please provide a valid email
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-4 col-form-label text-md-right"
+                style="font-weight: bold; color: #000000;">parentMobile</label>
+              <div class="col-md-6">
+                <input type="text" [formControlName]="'parentMobile'" class="form-control" required autofocus>
+                <span *ngIf="!signupForm.get('parentMobile').valid && signupForm.get('parentMobile').touched"
+                  style="color: red;">
+                  Please provide a valid mobile Number
+                </span>
+              </div>
+            </div>-->
+
+            <span class="col-md-6 offset-md-4">
+              <button type="submit" class="submit" align="center" style="margin-left: 88%;">
+                Sign Up
+              </button>
+              <span style="padding-left: 15px ;color: #000000;">Existing user? <a routerLink="/auth/Login">Log
+                  In</a></span>
+            </span>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
