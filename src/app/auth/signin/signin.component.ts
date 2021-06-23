@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
-import {throwError} from 'rxjs';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
 
 import {AuthService} from '../auth.service';
 import {LoginRequestPayload} from './login-request.payload';
+import {throwError} from 'rxjs';
+import {AlertService} from '../alert.service';
 
 
 @Component({
@@ -14,14 +15,18 @@ import {LoginRequestPayload} from './login-request.payload';
 })
 export class SigninComponent implements OnInit {
 
-  loginForm: FormGroup;
+  form: FormGroup;
+  loading = false;
+  submitted = false;
+  returnUrl: string;
   loginRequestPayload: LoginRequestPayload;
-  isError: boolean;
 
   constructor(
-    private authService: AuthService,
-    private router: Router,
-    public auth: AuthService
+      private formBuilder: FormBuilder,
+      private route: ActivatedRoute,
+      private router: Router,
+      public auth: AuthService,
+      private alertService: AlertService
   ) {
     this.loginRequestPayload = {
       userName: '',
@@ -29,32 +34,51 @@ export class SigninComponent implements OnInit {
     };
   }
 
-  ngOnInit(): void {
-    this.loginForm = new FormGroup({
-      username: new FormControl('', Validators.required),
-      password: new FormControl('', Validators.required),
+  ngOnInit() {
+    this.form = this.formBuilder.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
     });
+
+    // get return url from route parameters or default to '/'
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
-  login() {
-    this.loginRequestPayload.userName = this.loginForm.get('username').value;
-    this.loginRequestPayload.password = this.loginForm.get('password').value;
+  // convenience getter for easy access to form fields
+  get f() {
+    return this.form.controls;
+  }
 
-    this.authService.login(this.loginRequestPayload).subscribe(
-      (data) => {
-        this.isError = false;
-        if (localStorage.getItem('authenticationToken') !== 'null') {
-          console.log(this.auth.getJwtToken());
-          this.router.navigateByUrl('/dashboard');
+  onSubmit() {
+    this.submitted = true;
 
-        }
-      },
-      (error) => {
-        this.isError = true;
-        throwError(error);
-        alert('Login Failed');
-      }
-    );
+    // reset alerts on submit
+    this.alertService.clear();
+
+    // stop here if form is invalid
+    if (this.form.invalid) {
+      return;
+    }
+
+    this.loading = true;
+
+    this.loginRequestPayload.userName = this.f.username.value;
+    this.loginRequestPayload.password = this.f.password.value;
+
+    this.auth.login(this.loginRequestPayload)
+        .subscribe(
+            (data) => {
+              if (localStorage.getItem('authenticationToken') !== 'null') {
+                console.log(this.auth.getJwtToken());
+                this.router.navigateByUrl('/dashboard');
+
+              }
+            },
+            (error) => {
+              throwError(error);
+              alert('Login Failed');
+            }
+        );
   }
 
 }

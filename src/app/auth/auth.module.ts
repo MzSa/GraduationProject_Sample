@@ -4,22 +4,24 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {AuthComponent} from './auth.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {CommonModule} from '@angular/common';
-import {SignupComponent} from './signup/signup.component';
 import {SigninComponent} from './signin/signin.component';
 import {AuthService} from './auth.service';
 import {CustomHttpInterceptor} from './custom-http-interceptor';
+import {RegisterComponent} from './register/register.component';
+import { AlertComponent } from './alert/alert.component';
 
 @NgModule({
   declarations: [
     AuthComponent,
-    SignupComponent,
-    SigninComponent
+    RegisterComponent,
+    SigninComponent,
+    AlertComponent
   ],
   imports: [
     ReactiveFormsModule,
     AuthRoutingModule,
     HttpClientModule,
-    CommonModule
+    CommonModule,
   ],
   providers: [
     AuthService,

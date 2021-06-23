@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable, of, Subject} from 'rxjs';
-import {SignupRequestPayload} from './signup/singup-request.payload';
+import {RegisterRequestPayload} from './register/register-request.payload';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {catchError, tap} from 'rxjs/operators';
 import {LoginRequestPayload} from './signin/login-request.payload';
@@ -20,7 +20,7 @@ export class AuthService {
   constructor(private httpClient: HttpClient, private router: Router) {
   }
 
-  signup(signupRequestPayload: SignupRequestPayload): Observable<any> {
+  signup(signupRequestPayload: RegisterRequestPayload): Observable<any> {
     return this.httpClient.post(
       'http://192.168.1.109:8080/app-user/register',
       signupRequestPayload,
